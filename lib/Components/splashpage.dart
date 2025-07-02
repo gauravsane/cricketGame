@@ -1,6 +1,8 @@
 import 'package:crickstar/Components/loginPage.dart';
+import 'package:crickstar/Components/homePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget{
   @override
@@ -40,8 +42,16 @@ class SplashScreen extends StatelessWidget{
                           ),
                         ),
                         Transform.translate(offset: Offset(0, -10),child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                          onPressed: () async{
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            String? token = prefs.getString('token');
+                            print('Token is Present or Not $token');
+                            if(token != ""){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            }
+                            else{
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,
